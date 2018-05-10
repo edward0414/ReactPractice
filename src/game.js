@@ -22,6 +22,23 @@ function calculateWinner(squares) {
   return null;
 }
 
+function drawAlert(squares) {
+    const winner = calculateWinner(squares);
+    
+    if (!winner) {
+        let draw = true;
+        for (var x=0; x<squares.length; x++) {
+            if (!squares[x]) {
+                draw = false;
+                break
+            }
+        }
+
+        if (draw) {
+            alert("This game is a draw!");
+        }
+    }
+}
 
 class Game extends React.Component {
     
@@ -29,12 +46,23 @@ class Game extends React.Component {
         super(props);    
         this.state = {
             history: [{
-                squares: Array(9).fill(null,)    
+                squares: Array(9).fill(null),
+                curMove: null,
             }],
             stepNum: 0,
             xNext: true,
         };
     }
+    
+    
+    componentDidUpdate() {
+        console.log("!")
+        const history = this.state.history;
+        const current = history[this.state.stepNum];
+        
+        drawAlert(current.squares);
+    }
+    
     
     handleClick(i) {
         const history = this.state.history.slice(0, this.state.stepNum + 1);
@@ -46,16 +74,22 @@ class Game extends React.Component {
         }
         squares[i] = this.state.xNext? 'X':'O';
         
+        let x = Math.floor(i/3);
+        let y = i % 3;
+        var curMove = [x,y];
+        
         const next = !(this.state.xNext);
         
         this.setState({
             history: history.concat([{
-            squares: squares,
+                squares: squares,
+                curMove: curMove,
             }]),
             stepNum: history.length,
             xNext: next,
         });
     }
+    
     
     jumpTo(step) {
         this.setState({
@@ -64,20 +98,32 @@ class Game extends React.Component {
         });
     }
     
+    
     render() {
         
         const history = this.state.history;
         const current = history[this.state.stepNum];
         const winner = calculateWinner(current.squares);
         
+        
         const moves = history.map((step, move) => {
-            const desc = move? 'Go to move #' + move: 'Go to game start';
+            const desc = move? 'Go to move (' + history[move].curMove  + ')': 'Go to game start';
             
-            return(
+            if (move === this.state.stepNum) {
+                return (
+                    <li key={move}>
+                        <button className='bold' onClick={()=> this.jumpTo(move)}>{desc}</button>
+                    </li>
+                )
+                
+            } else {
+                return(
                 <li key={move}>
                     <button onClick={()=> this.jumpTo(move)}>{desc}</button>
                 </li>
             );
+                
+            }
         })
         
         let status;
