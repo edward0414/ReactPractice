@@ -6,20 +6,15 @@ import templates from './templates';
 
 function isFinished(game) {
     
-    let result = true;
-    
     for (let i=0; i<game.length; i++) {
-        if (result) {
-            for (let t=0; t<game[i].length; t++) {
-                if (!game[i][t]) {
-                    result = false;
-                    break
-                }
-            }   
-        }
+        for (let t=0; t<game[i].length; t++) {
+            if (!game[i][t]) {
+                return false;
+            }
+        } 
     }
     
-    return result;
+    return true;
 }
 
 
