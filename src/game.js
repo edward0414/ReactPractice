@@ -3,9 +3,7 @@ import './index.css';
 import Board from './board';
 import templates from './templates';
 
-//disabled the number button when remain is 0
 //select the selected number
-//new game button
 
 function isFinished(game) {
     
@@ -98,7 +96,8 @@ class Game extends React.Component {
     
     constructor(props) {
         super(props);
-        let ind = Math.floor(Math.random() * 7);
+//        let ind = Math.floor(Math.random() * 7);
+        let ind = 7;
         const game = templates[ind];
         let solved = countSolved(game);
         this.state = {
@@ -112,10 +111,22 @@ class Game extends React.Component {
         };
     }
     
-    //To-Do
-    componentDidUpdate() {
-        const history = this.state.history;
-        const current = history[this.state.stepNum];
+    
+    newGame() {
+        console.log("here");
+        let ind = Math.floor(Math.random() * 7);
+        const game = templates[ind];
+        let solved = countSolved(game);
+        console.log("ind: ", ind);
+        this.setState({
+            history: [{
+                game: game,
+                curMove: null,
+                solved: solved,
+            }],
+            stepNum: 0,
+            curNum: 1,
+        });
     }
     
 
@@ -175,7 +186,16 @@ class Game extends React.Component {
         const isOver = isFinished(current.game);
         
         const numButton = [1,2,3,4,5,6,7,8,9].map((val) => {
-            if (val === this.state.curNum) {
+            if (current.solved[val-1] === 9) {
+                return(
+                    <li>
+                        <button className="button" onClick={() => this.changeNum(val)} disabled>
+                            {val + " (" + (9-current.solved[val-1]) + ")"}
+                        </button>
+                    </li>
+                );
+                
+            } else if (val === this.state.curNum) {
                 return(
                     <li>
                         <button className="bold button" onClick={() => this.changeNum(val)}>
@@ -213,13 +233,13 @@ class Game extends React.Component {
                 </div>
                 <div className='game-info'>
                     <div className="title bold">Sudoku</div>
-                    <div className="text">{status}</div>
+                    {violate? (<div className="text red">{status}</div>):<div className="text">{status}</div>}
                     <div className="number">
                         {numButton}
                     </div>
                     <div className="bottom-buttons">
                         <div>
-                            <button onClick={()=> this.restart()}>Restart</button>
+                            <button onClick={()=> this.restart()}>Restart</button><button onClick={()=> this.newGame()}>New Game</button>
                         </div>
                         <div>
                             {this.state.stepNum>0? (<button onClick={() => this.undo()}>{'Undo ('+current.curMove+')'}</button>): (<button disabled>Undo</button>)}

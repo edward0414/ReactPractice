@@ -82,22 +82,26 @@ ol, ul {
 }
 
 .title {
-    padding: 2px 15px;
-    font-size: 25px;
+  padding: 2px 15px;
+  font-size: 25px;
 }
 
 .text {
-    padding-top: 1.5px;
+  padding-top: 1.5px;
 }
 
 .number {
-    padding: 8.5px;
+  padding: 8.5px;
 }
 
 .button {
-    width: 60px;
+  width: 60px;
 }
 
 .bottom-buttons {
-    padding: 4px;
+  padding: 4px;
+}
+
+.red {
+  color: red;
 }
