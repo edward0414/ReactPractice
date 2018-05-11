@@ -37,11 +37,10 @@ function checkViolation(game) {
     
     //Check horizontal
     for (let i=0; i<game.length; i++) {
-        var counts = Array(10).fill(0);
+        let counts = [];
         for (let t=0; t<game[i].length; t++) {
             if (game[i][t] && !counts[game[i][t]]) {
                 counts[game[i][t]] = 1;
-
             } else if (!game[i][t]) {
 
             } else {
@@ -90,8 +89,7 @@ class Game extends React.Component {
     
     constructor(props) {
         super(props);
-//        let ind = Math.floor(Math.random() * 7);
-        let ind = 7;
+        let ind = Math.floor(Math.random() * 7);
         const game = templates[ind];
         let solved = countSolved(game);
         this.state = {
@@ -209,7 +207,7 @@ class Game extends React.Component {
         
         let status = 'You can solve this! I believe in you.';
         if (!violate && isOver) {
-            status = 'Congratulation! You have solved the game.';
+            status = 'Congratulation! You have solved the puzzle.';
         } else if (violate) {
             status = 'Uh oh, that does not seem like a good move.';
         }
@@ -233,7 +231,8 @@ class Game extends React.Component {
                     </div>
                     <div className="bottom-buttons">
                         <div>
-                            <button onClick={()=> this.restart()}>Restart</button><button onClick={()=> this.newGame()}>New Game</button>
+                            <button onClick={()=> this.restart()}>Restart</button>
+                            <button onClick={()=> this.newGame()}>New Game</button>
                         </div>
                         <div>
                             {this.state.stepNum>0? (<button onClick={() => this.undo()}>{'Undo ('+current.curMove+')'}</button>): (<button disabled>Undo</button>)}
