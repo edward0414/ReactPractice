@@ -3,7 +3,22 @@ import './index.css';
 
 
 function Square(props) {
-    if (props.isTemplate) {
+    if (props.selected && props.error) {
+        if (props.isTemplate) {
+            return (
+                <button className="square selected" onClick={props.onClick}>
+                    {props.value}
+                </button>
+            );
+        } else {
+            return (
+                <button className="answered selected" onClick={props.onClick}>
+                    {props.value}
+                </button>
+            );   
+        }
+        
+    } else if (props.isTemplate) {
         return (
             <button className="square" onClick={props.onClick}>
                 {props.value}
@@ -26,6 +41,8 @@ class Board extends React.Component {
         return(
             <Square
                 value={this.props.game[x][y]}
+                error={this.props.error}
+                selected={this.props.selected===this.props.game[x][y]}
                 isTemplate={isTemplate}
                 onClick={()=> this.props.onClick(x,y)}  
             />

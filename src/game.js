@@ -3,7 +3,6 @@ import './index.css';
 import Board from './board';
 import templates from './templates';
 
-//select the selected number
 
 function isFinished(game) {
     
@@ -113,11 +112,9 @@ class Game extends React.Component {
     
     
     newGame() {
-        console.log("here");
         let ind = Math.floor(Math.random() * 7);
         const game = templates[ind];
         let solved = countSolved(game);
-        console.log("ind: ", ind);
         this.setState({
             history: [{
                 game: game,
@@ -228,6 +225,8 @@ class Game extends React.Component {
                     <Board 
                         game={current.game}
                         template={this.state.history[0].game}
+                        selected={this.state.curNum}
+                        error={violate}
                         onClick={(x,y) => this.handleClick(x,y)}
                     />
                 </div>

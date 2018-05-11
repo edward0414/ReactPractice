@@ -48,6 +48,10 @@ ol, ul {
   width: 34px;
 }
 
+.selected {
+  border: 2px solid red;
+}
+
 .section {
   border: 2px solid black;
 }
