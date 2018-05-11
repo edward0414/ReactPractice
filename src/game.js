@@ -22,7 +22,22 @@ function isFinished(game) {
     return result;
 }
 
-//To-Do
+
+function countSolved(game) {
+    let result = Array(9).fill(0);
+    
+    for (let i=0; i<game.length; i++) {
+        for (let t=0; t<game[i].length; t++) {
+            if (game[i][t]) {
+                result[game[i][t]-1] += 1;
+            }
+        }
+    }
+    
+    return result;
+}
+
+
 function checkViolation(game) {
     
     //Check horizontal
@@ -82,10 +97,12 @@ class Game extends React.Component {
         super(props);
         let ind = Math.floor(Math.random() * 7);
         const game = templates[ind];
+        let solved = countSolved(game);
         this.state = {
             history: [{
                 game: game,
                 curMove: null,
+                solved: solved,
             }],
             stepNum: 0,
             curNum: 1,
@@ -101,7 +118,8 @@ class Game extends React.Component {
 
     handleClick(x,y) { 
         const history = this.state.history.slice(0, this.state.stepNum + 1);
-        const current = history[history.length -1]
+        const current = history[history.length -1];
+        const solved = current.solved.slice();
         
         //make a copy of the game array
         const game = current.game.map((arr) => arr.slice());
@@ -111,6 +129,7 @@ class Game extends React.Component {
         }
         
         game[x][y] = this.state.curNum;
+        solved[this.state.curNum-1] += 1;
         
         var curMove = [x,y];
         
@@ -118,6 +137,7 @@ class Game extends React.Component {
             history: history.concat([{
                 game: game,
                 curMove: curMove,
+                solved: solved,
             }]),
             stepNum: history.length
         });
@@ -151,15 +171,12 @@ class Game extends React.Component {
         const violate = checkViolation(current.game);
         const isOver = isFinished(current.game);
         
-        console.log("Violation?: ", violate);
-        console.log("Over?: ", isOver);
-        
         const numButton = [1,2,3,4,5,6,7,8,9].map((val) => {
             if (val === this.state.curNum) {
                 return(
                     <li>
                         <button className="bold button" onClick={() => this.changeNum(val)}>
-                            {val + " (Selected)"}
+                            {val + " (" + (9-current.solved[val-1]) + ")"}
                         </button>
                     </li>
                 );
@@ -168,7 +185,7 @@ class Game extends React.Component {
                 return(
                     <li>
                         <button className="button" onClick={() => this.changeNum(val)}>
-                            {val}
+                            {val + " (" + (9-current.solved[val-1]) + ")"}
                         </button>
                     </li>
                 );
@@ -186,7 +203,8 @@ class Game extends React.Component {
             <div className='game'>
                 <div className='game-board'>
                     <Board 
-                        game={current.game} 
+                        game={current.game}
+                        template={this.state.history[0].game}
                         onClick={(x,y) => this.handleClick(x,y)}
                     />
                 </div>
@@ -201,7 +219,7 @@ class Game extends React.Component {
                             <button onClick={()=> this.restart()}>Restart</button>
                         </div>
                         <div>
-                            {this.state.stepNum>0? (<button onClick={() => this.undo()}>Undo</button>): (<button disabled>Undo</button>)}
+                            {this.state.stepNum>0? (<button onClick={() => this.undo()}>{'Undo ('+current.curMove+')'}</button>): (<button disabled>Undo</button>)}
                         </div>
                     </div>
                 </div>

@@ -29,7 +29,11 @@ class Board extends React.Component {
         const board = [0,1,2].map((y) => { //y-related
             const row = [0,1,2].map((x) => { //x-related
                 const section = [0,1,2].map((num) => { // building a secction
-                    const squares = [0, 1, 2].map((val)=> this.renderSquare(y*3+num, x*3+val))
+                    const squares = [0, 1, 2].map((val) => {
+                        let a = y*3+num;
+                        let b = x*3+val;
+                        return this.renderSquare(y*3+num, x*3+val, )
+                    })
 
                     return (
                         <div className='board-row' key={num}>{squares}</div>
