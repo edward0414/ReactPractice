@@ -196,7 +196,7 @@ class Game extends React.Component {
                     <div className="number">
                         {numButton}
                     </div>
-                    <div>
+                    <div className="bottom-buttons">
                         <div>
                             <button onClick={()=> this.restart()}>Restart</button>
                         </div>

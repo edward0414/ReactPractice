@@ -62,7 +62,7 @@ ol, ul {
 }
 
 .title {
-    padding: 2px 10px;
+    padding: 2px 15px;
     font-size: 25px;
 }
 
@@ -76,4 +76,8 @@ ol, ul {
 
 .button {
     width: 90px;
+}
+
+.bottom-buttons {
+    padding: 4px;
 }
