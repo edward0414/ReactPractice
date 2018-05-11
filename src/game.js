@@ -80,8 +80,7 @@ class Game extends React.Component {
     
     constructor(props) {
         super(props);
-//        let ind = Math.floor(Math.random() * 7);
-        let ind = 7;
+        let ind = Math.floor(Math.random() * 7);
         const game = templates[ind];
         this.state = {
             history: [{
