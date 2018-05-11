@@ -32,14 +32,6 @@ ol, ul {
   width: 34px;
 }
 
-.section {
-  border: 2px solid black;
-}
-
-.row {
-  display: flex;
-}
-
 .square:focus {
   outline: none;
 }
