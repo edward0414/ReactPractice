@@ -3,6 +3,9 @@ import './index.css';
 import Board from './board';
 import templates from './templates';
 
+//disabled the number button when remain is 0
+//select the selected number
+//new game button
 
 function isFinished(game) {
     

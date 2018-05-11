@@ -3,22 +3,30 @@ import './index.css';
 
 
 function Square(props) {
-    return (
-        <button className="square" onClick={props.onClick}>
-            {props.value}
-        </button>
-    );
+    if (props.isTemplate) {
+        return (
+            <button className="square" onClick={props.onClick}>
+                {props.value}
+            </button>
+        );
+        
+    } else {
+        return (
+            <button className="answered" onClick={props.onClick}>
+                {props.value}
+            </button>
+        );
+    }
 }
 
 
 class Board extends React.Component {
     
-    renderSquare(x,y) {
+    renderSquare(x,y, isTemplate) {
         return(
             <Square
                 value={this.props.game[x][y]}
-                X={x}
-                Y={y}
+                isTemplate={isTemplate}
                 onClick={()=> this.props.onClick(x,y)}  
             />
         );
@@ -30,9 +38,7 @@ class Board extends React.Component {
             const row = [0,1,2].map((x) => { //x-related
                 const section = [0,1,2].map((num) => { // building a secction
                     const squares = [0, 1, 2].map((val) => {
-                        let a = y*3+num;
-                        let b = x*3+val;
-                        return this.renderSquare(y*3+num, x*3+val, )
+                        return this.renderSquare(y*3+num, x*3+val, this.props.template[y*3+num][x*3+val])
                     })
 
                     return (
