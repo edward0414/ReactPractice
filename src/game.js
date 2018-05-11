@@ -25,27 +25,54 @@ function isFinished(game) {
 //To-Do
 function checkViolation(game) {
     
-    let result = null;
     //Check horizontal
-    const num = {
-        1: false,
-        2: false,
-        3: false,
-        4: false,
-        5: false,
-        6: false,
-        7: false,
-        8: false,
-        9: false
+    for (let i=0; i<game.length; i++) {
+        var counts = Array(10).fill(0);
+        for (let t=0; t<game[i].length; t++) {
+            if (game[i][t] && !counts[game[i][t]]) {
+                counts[game[i][t]] = 1;
+
+            } else if (!game[i][t]) {
+
+            } else {
+                return true;
+            }
+        }
     }
     
-    for (let x=0; )
     //Check vertical
+    for (let i=0; i<game[0].length; i++) {
+        let counts = [];
+        for (let t=0; t<game.length; t++) {
+            if (game[t][i] && !counts[game[t][i]]) {
+                counts[game[t][i]] = 1;
+            } else if (!game[t][i]) {
+
+            } else {
+                return true;
+            }
+        }   
+    }
     
     //Check section
+    for (let i=0; i<7; i+=3) {
+        for (let j=0; j<7; j+=3) {
+            let counts = []
+            for (let k=0; k<3; k++) {
+                for (let l=0; l<3; l++) {
+                    if (game[i+l][j+k] && !counts[game[i+l][j+k]]) {
+                        counts[game[i+l][j+k]] = 1;
+                    } else if (!game[i+l][j+k]) {
+                        
+                    } else {
+                        return true;
+                    }
+                }
+            }
+        }
+    }
     
-    
-    return null;
+    return false;
 }
 
 
@@ -53,7 +80,8 @@ class Game extends React.Component {
     
     constructor(props) {
         super(props);
-        let ind = Math.floor(Math.random() * 6);
+//        let ind = Math.floor(Math.random() * 7);
+        let ind = 7;
         const game = templates[ind];
         this.state = {
             history: [{
@@ -121,25 +149,39 @@ class Game extends React.Component {
         
         const history = this.state.history;
         const current = history[this.state.stepNum];
+        const violate = checkViolation(current.game);
+        const isOver = isFinished(current.game);
         
-        console.log(current.game);
+        console.log("Violation?: ", violate);
+        console.log("Over?: ", isOver);
         
         const numButton = [1,2,3,4,5,6,7,8,9].map((val) => {
-            return(
-                <li>
-                    <button className="number" onClick={() => this.changeNum(val)}>
-                        {val}
-                    </button>
-                </li>
-            );
+            if (val === this.state.curNum) {
+                return(
+                    <li>
+                        <button className="bold button" onClick={() => this.changeNum(val)}>
+                            {val + " (Selected)"}
+                        </button>
+                    </li>
+                );
+            
+            } else {
+                return(
+                    <li>
+                        <button className="button" onClick={() => this.changeNum(val)}>
+                            {val}
+                        </button>
+                    </li>
+                );
+            }
         })
         
-        let status = 'Sudoku!';
-//        if (winner) {
-//            status = 'Winner: ' + winner;
-//        } else {
-//            status = "Next player: " + (this.state.xNext? 'X':'O');
-//        }
+        let status = 'You can solve this! I believe in you.';
+        if (!violate && isOver) {
+            status = 'Congratulation! You have solved the game.';
+        } else if (violate) {
+            status = 'Uh oh, that does not seem like a good move.';
+        }
         
         return(
             <div className='game'>
@@ -150,9 +192,9 @@ class Game extends React.Component {
                     />
                 </div>
                 <div className='game-info'>
-                    <div>{status}</div>
-                    <div>{"Number Selected: " + this.state.curNum}</div>
-                    <div>
+                    <div className="title bold">Sudoku</div>
+                    <div className="text">{status}</div>
+                    <div className="number">
                         {numButton}
                     </div>
                     <div>
@@ -160,7 +202,7 @@ class Game extends React.Component {
                             <button onClick={()=> this.restart()}>Restart</button>
                         </div>
                         <div>
-                            <button onClick={() => this.undo()}>Undo</button>
+                            {this.state.stepNum>0? (<button onClick={() => this.undo()}>Undo</button>): (<button disabled>Undo</button>)}
                         </div>
                     </div>
                 </div>

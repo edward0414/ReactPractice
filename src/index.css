@@ -60,3 +60,20 @@ ol, ul {
 .bold {
   font-weight: 700;
 }
+
+.title {
+    padding: 2px 10px;
+    font-size: 25px;
+}
+
+.text {
+    padding-top: 1.5px;
+}
+
+.number {
+    padding: 8.5px;
+}
+
+.button {
+    width: 90px;
+}
