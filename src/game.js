@@ -14,6 +14,7 @@ function isFinished(game) {
         } 
     }
     
+    
     return true;
 }
 
