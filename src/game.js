@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './index.css';
 import Board from './board';
 import templates from './templates';
@@ -13,7 +13,6 @@ function isFinished(game) {
             }
         } 
     }
-    
     
     return true;
 }
